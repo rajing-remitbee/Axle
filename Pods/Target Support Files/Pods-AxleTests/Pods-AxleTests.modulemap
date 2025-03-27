@@ -1,0 +1,6 @@
+framework module Pods_AxleTests {
+  umbrella header "Pods-AxleTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

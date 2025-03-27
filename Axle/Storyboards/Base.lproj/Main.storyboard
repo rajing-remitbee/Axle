@@ -15,8 +15,41 @@
                     <view key="view" contentMode="scaleToFill" id="Lok-Ap-rlC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wH7-g7-a8K">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AXLE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcH-Bg-0eY">
+                                        <rect key="frame" x="114" y="385.33333333333331" width="165" height="81.333333333333314"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="70"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A taxi booking app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vmn-y5-Tlr">
+                                        <rect key="frame" x="0.0" y="466.66666666666669" width="393" height="20"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.023529411764705882" green="0.75686274509803919" blue="0.41568627450980389" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Vmn-y5-Tlr" secondAttribute="trailing" id="6FC-S6-Hks"/>
+                                    <constraint firstItem="jcH-Bg-0eY" firstAttribute="centerY" secondItem="wH7-g7-a8K" secondAttribute="centerY" id="Bc1-Xq-N8x"/>
+                                    <constraint firstItem="jcH-Bg-0eY" firstAttribute="centerX" secondItem="wH7-g7-a8K" secondAttribute="centerX" id="j5o-CO-nGU"/>
+                                    <constraint firstItem="Vmn-y5-Tlr" firstAttribute="top" secondItem="jcH-Bg-0eY" secondAttribute="bottom" id="onS-c8-W4g"/>
+                                    <constraint firstItem="Vmn-y5-Tlr" firstAttribute="leading" secondItem="wH7-g7-a8K" secondAttribute="leading" id="wqH-T3-UBQ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="lQX-lj-xaN"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wH7-g7-a8K" firstAttribute="top" secondItem="Lok-Ap-rlC" secondAttribute="top" id="NSm-vD-rmA"/>
+                            <constraint firstAttribute="trailing" secondItem="wH7-g7-a8K" secondAttribute="trailing" id="QdR-jM-ibD"/>
+                            <constraint firstItem="wH7-g7-a8K" firstAttribute="leading" secondItem="Lok-Ap-rlC" secondAttribute="leading" id="nmm-qZ-COV"/>
+                            <constraint firstAttribute="bottom" secondItem="wH7-g7-a8K" secondAttribute="bottom" id="ylE-Yn-YlE"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FB8-rG-dJX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

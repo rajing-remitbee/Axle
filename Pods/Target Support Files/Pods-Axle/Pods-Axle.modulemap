@@ -1,0 +1,6 @@
+framework module Pods_Axle {
+  umbrella header "Pods-Axle-umbrella.h"
+
+  export *
+  module * { export * }
+}
