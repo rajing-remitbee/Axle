@@ -6,6 +6,9 @@ target 'Axle' do
   use_frameworks!
 
   # Pods for Axle
+  pod "lottie-ios"
+  pod 'FirebaseRemoteConfig'
+  pod 'Apollo'
 
   target 'AxleTests' do
     inherit! :search_paths
