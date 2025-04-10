@@ -94,7 +94,7 @@ class BackendService {
     //Perform GraphQL Request
     func performGraphQLRequest<T: Decodable>(query: String, completion: @escaping (Result<T, Error>) -> Void) {
         //GraphQL URL
-        guard let url = URL(string: "\(graphqlURL.absoluteString)graphql") else {
+        guard let url = URL(string: "\(graphqlURL.absoluteString)/graphql") else {
             completion(.failure(NSError(domain: "URLError", code: -1000, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }

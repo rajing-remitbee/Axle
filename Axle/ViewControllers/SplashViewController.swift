@@ -32,7 +32,6 @@ class SplashViewController: UIViewController {
             DispatchQueue.main.async {
                 if isBackendOK {
                     //Show success toast
-                    self?.showToast(message: "Connection Successful!")
                     self?.downloadCountryCodes()
                 } else {
                     //Show error toast

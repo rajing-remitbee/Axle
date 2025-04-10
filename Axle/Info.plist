@@ -4,15 +4,15 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Gilroy-Black.ttf</string>
-		<string>Gilroy-Bold.ttf</string>
-		<string>Gilroy-Heavy.ttf</string>
-		<string>Gilroy-Light.ttf</string>
-		<string>Gilroy-Medium.ttf</string>
-		<string>Gilroy-Regular.ttf</string>
-		<string>Gilroy-SemiBold.ttf</string>
-		<string>Gilroy-Thin.ttf</string>
-		<string>Gilroy-UltraLight.ttf</string>
+		<string>Gilroy-Black</string>
+		<string>Gilroy-Bold</string>
+		<string>Gilroy-Heavy</string>
+		<string>Gilroy-Light</string>
+		<string>Gilroy-Medium</string>
+		<string>Gilroy-Regular</string>
+		<string>Gilroy-SemiBold</string>
+		<string>Gilroy-Thin</string>
+		<string>Gilroy-UltraLight</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

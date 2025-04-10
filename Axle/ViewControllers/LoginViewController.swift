@@ -46,7 +46,15 @@ class LoginViewController: UIViewController {
         
         //Continue Button - State
         let isPhoneNumberEmpty = phoneNumberTextView.text?.isEmpty ?? true
-        btnContinue.alpha = isPhoneNumberEmpty ? 0.4 : 1.0
+        if isPhoneNumberEmpty {
+            btnContinue.alpha = 0.4
+            btnContinue.tintColor = UIColor.white
+            btnContinue.setTitleColor(UIColor.white, for: .normal)
+        } else {
+            btnContinue.alpha = 1.0
+            btnContinue.tintColor = UIColor.black
+            btnContinue.setTitleColor(UIColor.black, for: .normal)
+        }
         
         //Set Default Country
         if let defaultCountry = defaultCountry {
@@ -63,19 +71,28 @@ class LoginViewController: UIViewController {
     
     //Continue Button Pressed
     @IBAction func btnContinuePressed(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let verificationViewController = storyboard.instantiateViewController(withIdentifier: "VerificationViewController") as! VerificationViewController
-        
-        if let phone = phoneNumberTextView.text {
-            if let prefixText = getPrefixText() {
-                verificationViewController.phoneNumber = "\(prefixText)\(phone)"
-            } else {
-                print("No prefix found.")
+        let isPhoneNumberEmpty = phoneNumberTextView.text?.isEmpty ?? true
+        if !isPhoneNumberEmpty {
+            guard let phone = phoneNumberTextView.text, !phone.isEmpty else {
+                self.showToast(message: "Phone number is empty!")
+                return
             }
-        } else {
-            verificationViewController.phoneNumber = ""
+            
+            guard let prefixText = getPrefixText() else {
+                self.showToast(message: "Country Code not available!")
+                return
+            }
+            
+            if isValidPhoneNumber(phoneNumber: phone) {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let verificationViewController = storyboard.instantiateViewController(withIdentifier: "VerificationViewController") as! VerificationViewController
+                verificationViewController.phoneNumber = "\(prefixText)\(phone)"
+                self.navigationController?.pushViewController(verificationViewController, animated: true)
+            } else {
+                self.showToast(message: "Please enter a valid phone number!")
+            }
         }
-        self.navigationController?.pushViewController(verificationViewController, animated: true)
+        
     }
     
     func getPrefixText() -> String? {
@@ -89,6 +106,21 @@ class LoginViewController: UIViewController {
             }
         }
         return ""
+    }
+    
+    func isValidPhoneNumber(phoneNumber: String) -> Bool {
+        if phoneNumber.isEmpty {
+            return false
+        }
+        let regexPattern = "^\\+?\\d{5,}$"
+        do {
+            let regex = try NSRegularExpression(pattern: regexPattern)
+            let range = NSRange(location: 0, length: phoneNumber.utf16.count)
+            return regex.firstMatch(in: phoneNumber, options: [], range: range) != nil
+        } catch {
+            print("Error creating regex: \(error)")
+            return false
+        }
     }
     
     //Countries List - Sorted
@@ -263,13 +295,21 @@ extension LoginViewController: UITextFieldDelegate {
     
     // Text Field Changes
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == phoneNumberTextView {
+        if textField == phoneNumberTextView {50
             let currentText = textField.text ?? "" //Current text
             guard let stringRange = Range(range, in: currentText) else { return true }
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
             
-            btnContinue.alpha = updatedText.isEmpty ? 0.4 : 1.0 //Update Continue button
-            btnContinue.isEnabled =  updatedText.isEmpty ? false : true
+            //Continue Button - State
+            if updatedText.isEmpty {
+                btnContinue.alpha = 0.4
+                btnContinue.tintColor = UIColor.white
+                btnContinue.setTitleColor(UIColor.white, for: .normal)
+            } else {
+                btnContinue.alpha = 1.0
+                btnContinue.tintColor = UIColor.black
+                btnContinue.setTitleColor(UIColor.black, for: .normal)
+            }
         }
         return true
     }
