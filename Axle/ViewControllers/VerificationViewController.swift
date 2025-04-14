@@ -98,6 +98,8 @@ class VerificationViewController: UIViewController {
                 switch result {
                 case .success(let response):
                     if response.verifyOTP.success {
+                        UserProfileData.shared.reset()
+                        UserProfileData.shared.setMobileNumber(phoneNumber: self?.phoneNumber ?? "")
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let emailaddressViewController = storyboard.instantiateViewController(withIdentifier: "EmailAddressViewController") as! EmailAddressViewController
                         var currentStack = self?.navigationController?.viewControllers ?? []

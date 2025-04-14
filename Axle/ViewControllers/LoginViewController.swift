@@ -261,7 +261,6 @@ extension LoginViewController: UITableViewDelegate {
         
         updatePhoneNumberPrefix(country: selectedCountry)
         
-//         self.delegate?.didSelectCountry(selectedCountry)
         showDropdown(show: false)
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -295,7 +294,7 @@ extension LoginViewController: UITextFieldDelegate {
     
     // Text Field Changes
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == phoneNumberTextView {50
+        if textField == phoneNumberTextView {
             let currentText = textField.text ?? "" //Current text
             guard let stringRange = Range(range, in: currentText) else { return true }
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
@@ -303,12 +302,8 @@ extension LoginViewController: UITextFieldDelegate {
             //Continue Button - State
             if updatedText.isEmpty {
                 btnContinue.alpha = 0.4
-                btnContinue.tintColor = UIColor.white
-                btnContinue.setTitleColor(UIColor.white, for: .normal)
             } else {
                 btnContinue.alpha = 1.0
-                btnContinue.tintColor = UIColor.black
-                btnContinue.setTitleColor(UIColor.black, for: .normal)
             }
         }
         return true

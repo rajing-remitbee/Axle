@@ -74,7 +74,6 @@ class CountryPickerInputView: UIView {
         arrowImageView.tintColor = .black
         arrowImageView.contentMode = .scaleAspectFit
         
-        
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = 4
@@ -86,6 +85,7 @@ class CountryPickerInputView: UIView {
         
         addSubview(stackView)
         
+        //Constraints
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
@@ -101,9 +101,11 @@ class CountryPickerInputView: UIView {
     
     //Update UI after selection
     private func updateUI() {
+        //Selected country flag
         if let country = selectedCountry {
             flagLabel.text = country.flag
         } else {
+            //Default white flag
             flagLabel.text = "🏳️"
         }
     }
@@ -116,16 +118,19 @@ class CountryPickerInputView: UIView {
     
     //Tap Handle
     @objc private func handleTap() {
+        //Expand when tapped
         delegate?.countryPickerInputViewDidTapToExpand(self)
     }
     
     //Update DropDown Appearance
     private func updateAppearance() {
+        //If dropdown open
         if isDropdownOpen {
             self.backgroundColor = .clear
             self.layer.borderWidth = 1
             self.layer.borderColor = UIColor(hex: "#D2D2D2")?.cgColor
         } else {
+            //If dropdown close
             self.backgroundColor = UIColor(hex: "E1E1E1")
             self.layer.borderWidth = 0
             self.layer.borderColor = UIColor.clear.cgColor
@@ -134,6 +139,7 @@ class CountryPickerInputView: UIView {
     
     //Country Selection
     func countrySelected(_ country: Country) {
+        //Selected country
         self.selectedCountry = country
     }
 }
