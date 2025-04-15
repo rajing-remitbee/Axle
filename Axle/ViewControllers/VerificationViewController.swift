@@ -94,29 +94,93 @@ class VerificationViewController: UIViewController {
         
         BackendService.shared.performGraphQLRequest(query: query) { [weak self] (result: Result<VerifyOTPResponse, Error>) in
             DispatchQueue.main.async {
-                self?.activityIndicator.stopAnimating() // Hide loading
                 switch result {
                 case .success(let response):
                     if response.verifyOTP.success {
-                        UserProfileData.shared.reset()
-                        UserProfileData.shared.setMobileNumber(phoneNumber: self?.phoneNumber ?? "")
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let emailaddressViewController = storyboard.instantiateViewController(withIdentifier: "EmailAddressViewController") as! EmailAddressViewController
-                        var currentStack = self?.navigationController?.viewControllers ?? []
-                        if !currentStack.isEmpty {
-                            currentStack.removeLast() // Remove the last one (self)
+                        let phone = self?.phoneNumber
+                        let dataCheckQuery = "query { checkUserRegistration(phoneNumber: \"\(phone!)\") { userExists personalDetailsComplete addressDetailsComplete user { id email first_name last_name terms_accepted } } }"
+
+                    
+                        BackendService.shared.performGraphQLRequest(query: dataCheckQuery) { [weak self] (dataCheckResult: Result<UserRegisterCheckResponse, Error>) in
+                            DispatchQueue.main.async {
+                                switch dataCheckResult {
+                                case .success(let dataCheckResponse):
+                                    if dataCheckResponse.checkUserRegistration.userExists == true {
+                                        if dataCheckResponse.checkUserRegistration.addressDetailsComplete {
+                                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                            let homeViewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+                                            var currentStack = self?.navigationController?.viewControllers ?? []
+                                            if !currentStack.isEmpty {
+                                                currentStack.removeLast() // Remove the last one (self)
+                                            }
+                                            currentStack.append(homeViewController)
+                                            self?.navigationController?.setViewControllers(currentStack, animated: true)
+                                        } else if dataCheckResponse.checkUserRegistration.personalDetailsComplete {
+                                            if let user = dataCheckResponse.checkUserRegistration.user {
+                                                UserProfileData.shared.reset()
+                                                UserProfileData.shared.setUserId(userId: user.id)
+                                                UserProfileData.shared.setMobileNumber(phoneNumber: self?.phoneNumber ?? "")
+                                                UserProfileData.shared.setEmailAddress(emailAddress: user.email)
+                                                UserProfileData.shared.setFirstName(firstName: user.first_name)
+                                                UserProfileData.shared.setLastName(lastName: user.last_name)
+                                                UserProfileData.shared.setTermsAndConditions(choice: user.terms_accepted)
+                                                
+                                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                                let emailaddressViewController = storyboard.instantiateViewController(withIdentifier: "LocationAccessViewController") as! LocationAccessViewController
+                                                var currentStack = self?.navigationController?.viewControllers ?? []
+                                                if !currentStack.isEmpty {
+                                                    currentStack.removeLast() // Remove the last one (self)
+                                                }
+                                                currentStack.append(emailaddressViewController)
+                                                self?.navigationController?.setViewControllers(currentStack, animated: true)
+                                            }
+                                        } else {
+                                            UserProfileData.shared.reset()
+                                            UserProfileData.shared.setMobileNumber(phoneNumber: self?.phoneNumber ?? "")
+                                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                            let emailaddressViewController = storyboard.instantiateViewController(withIdentifier: "EmailAddressViewController") as! EmailAddressViewController
+                                            var currentStack = self?.navigationController?.viewControllers ?? []
+                                            if !currentStack.isEmpty {
+                                                currentStack.removeLast() // Remove the last one (self)
+                                            }
+                                            currentStack.append(emailaddressViewController)
+                                            self?.navigationController?.setViewControllers(currentStack, animated: true)
+                                        }
+                                    } else {
+                                        UserProfileData.shared.reset()
+                                        UserProfileData.shared.setMobileNumber(phoneNumber: self?.phoneNumber ?? "")
+                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        let emailaddressViewController = storyboard.instantiateViewController(withIdentifier: "EmailAddressViewController") as! EmailAddressViewController
+                                        var currentStack = self?.navigationController?.viewControllers ?? []
+                                        if !currentStack.isEmpty {
+                                            currentStack.removeLast() // Remove the last one (self)
+                                        }
+                                        currentStack.append(emailaddressViewController)
+                                        self?.navigationController?.setViewControllers(currentStack, animated: true)
+                                    }
+                                case .failure(let error):
+                                    self?.activityIndicator.stopAnimating()
+                                    print("Error Processing Request: \(error)")
+                                    self?.showErrorMessage("Cannot process your request")
+                                }
+                            }
+                            
                         }
-                        currentStack.append(emailaddressViewController)
-                        self?.navigationController?.setViewControllers(currentStack, animated: true)
                     } else {
                         self?.showErrorMessage(response.verifyOTP.message)
                     }
                 case .failure(let error):
+                    self?.activityIndicator.stopAnimating()
                     print("Error verifying OTP: \(error)")
                     self?.showErrorMessage("Failed to verify OTP. Please try again.")
                 }
             }
         }
+    }
+    
+    func urlEncode(_ string: String) -> String? {
+        let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        return encoded
     }
     
     private func populateOTPTextFields(otp: String) {

@@ -67,9 +67,20 @@ class AddressInfoViewController: UIViewController {
     
     @IBAction func btnSaveAddressTapped(_ sender: UIButton) {
         if btnSaveAddress.alpha == 1.0 {
+            
+            UserProfileData.shared.setAptName(aptName: address1.text ?? "")
+            UserProfileData.shared.setBuildingName(buildName: address2.text ?? "")
+            if deliveryOption == 1 {
+                UserProfileData.shared.setPickupType(pickupType: "Leave at Door")
+            } else {
+                UserProfileData.shared.setPickupType(pickupType: "Meet at Door")
+            }
+            UserProfileData.shared.setPickupLabel(label: addressLabel.text ?? "")
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let pushNotificationViewController = storyboard.instantiateViewController(withIdentifier: "PushNotificationViewController") as! PushNotificationViewController
-            self.navigationController?.pushViewController(pushNotificationViewController, animated: true)
+            pushNotificationViewController.modalPresentationStyle = .fullScreen
+            present(pushNotificationViewController, animated: true)
         }
     }
     
